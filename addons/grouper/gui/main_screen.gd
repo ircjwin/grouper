@@ -16,14 +16,46 @@ const GLOBAL_GROUP: String = "Global"
 const SCENE_GROUP: String = "Scene"
 
 @onready var group_table: GroupTable = %GroupTable
+@onready var update_label: Label = %UpdateLabel
+@onready var refresh_button: Button = %RefreshButton
 
 var data_frame: DataFrame
 var global_groups: PackedStringArray
+var last_update: int
 
 
 func _ready() -> void:
     _build_frame()
     group_table.render(data_frame)
+    last_update = Time.get_ticks_msec()
+
+    refresh_button.icon = get_theme_icon(&"Reload", &"EditorIcons")
+    refresh_button.pressed.connect(_on_refresh_button_pressed)
+
+
+func _process(_delta: float) -> void:
+    var time_since: int
+    var time_unit: String
+    var since_update: int = (Time.get_ticks_msec() - last_update) / 1000
+
+    if since_update < 60:
+        time_since = since_update
+        time_unit = "seconds"
+    else:
+        time_since = since_update / 60
+
+        if time_since < 2:
+            time_unit = "minute"
+        else:
+            time_unit = "minutes"
+
+    update_label.text = "Last updated %d %s ago" % [time_since, time_unit]
+
+
+func _on_refresh_button_pressed() -> void:
+    _build_frame()
+    group_table.render(data_frame)
+    last_update = Time.get_ticks_msec()
 
 
 func _build_frame() -> void:

@@ -3,6 +3,13 @@
 [ext_resource type="Script" uid="uid://cdbnshbht6m4f" path="res://addons/grouper/gui/main_screen.gd" id="1_8so5d"]
 [ext_resource type="Script" uid="uid://chyx7l1yfjkpt" path="res://addons/grouper/gui/group_table.gd" id="2_i5hoi"]
 
+[sub_resource type="DPITexture" id="DPITexture_i5hoi"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfxu0"]
+bg_color = Color(0.21330002, 0.229365, 0.27, 1)
+
 [node name="MainScreen" type="Control" unique_id=923463179]
 layout_mode = 3
 anchors_preset = 15
@@ -14,12 +21,54 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_8so5d")
 
-[node name="GroupTable" type="VBoxContainer" parent="." unique_id=422266960]
-unique_name_in_owner = true
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1155455853]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=538092789]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1112656553]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="UpdateLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=45187405]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "Last updated 3 minutes ago"
+vertical_alignment = 1
+
+[node name="RefreshButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1374275736]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_constants/h_separation = 0
+icon = SubResource("DPITexture_i5hoi")
+flat = true
+icon_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=1998825056]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1782839154]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_lfxu0")
+
+[node name="GroupTable" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/PanelContainer" unique_id=422266960]
+unique_name_in_owner = true
+layout_mode = 2
 script = ExtResource("2_i5hoi")
