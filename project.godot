@@ -23,6 +23,10 @@ window/stretch/aspect="expand"
 
 project/assembly_name="Grouper"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/grouper/plugin.cfg")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
