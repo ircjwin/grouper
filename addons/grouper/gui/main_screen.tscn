@@ -46,7 +46,7 @@ theme_override_constants/separation = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
-text = "Last updated 54 seconds ago"
+text = "Last updated 11 seconds ago"
 vertical_alignment = 1
 
 [node name="RefreshButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1374275736]
@@ -58,18 +58,34 @@ icon = SubResource("DPITexture_i5hoi")
 flat = true
 icon_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=1998825056]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1782839154]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1782839154]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_lfxu0")
 
-[node name="GroupTable" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/PanelContainer" unique_id=422266960]
+[node name="GroupTable" type="Control" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=885036257]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 0
 script = ExtResource("2_i5hoi")
+
+[node name="HeaderContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/GroupTable" unique_id=1068812388]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/GroupTable/HeaderContainer" unique_id=1998825056]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RowContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/GroupTable/HeaderContainer/ScrollContainer" unique_id=48396829]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0

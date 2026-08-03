@@ -1,35 +1,46 @@
 @tool
 class_name GroupTable
-extends VBoxContainer
+extends Control
 
 
 @onready var row: PackedScene = preload("res://addons/grouper/gui/row.tscn")
 @onready var header_cell: PackedScene = preload("res://addons/grouper/gui/header_cell.tscn")
 @onready var row_cell: PackedScene = preload("res://addons/grouper/gui/row_cell.tscn")
+@onready var header_container: VBoxContainer = %HeaderContainer
+@onready var row_container: VBoxContainer = %RowContainer
+@onready var updown_icon: Texture2D = get_theme_icon(&"GuiSpinboxUpdown", &"EditorIcons")
+@onready var asc_icon: Texture2D = get_theme_icon(&"GuiSpinboxUp", &"EditorIcons")
+@onready var desc_icon: Texture2D = get_theme_icon(&"GuiSpinboxDown", &"EditorIcons")
 
 var data_frame: DataFrame
+var last_sort: String
+var is_desc: bool
 
 
 func render(new_frame: DataFrame) -> void:
     data_frame = new_frame
+    last_sort = ""
+    is_desc = false
 
-    get_children().map(func(x): x.queue_free())
+    header_container.get_children().map(func(x): if x is HBoxContainer: x.queue_free())
+    row_container.get_children().map(func(x): x.queue_free())
 
-    var table_header_row: HBoxContainer = _build_row()
-    add_child(table_header_row)
+    var header_row: HBoxContainer = _build_row()
+    header_container.add_child(header_row)
+    header_container.move_child(header_row, 0)
 
     for header: String in data_frame.get_all_columns():
-        var table_header_cell: Button = _build_header_cell(header)
-        table_header_row.add_child(table_header_cell)
-        table_header_cell.pressed.connect(_on_header_pressed.bind(header))
+        var header_cell: Button = _build_header_cell(header)
+        header_row.add_child(header_cell)
+        header_cell.pressed.connect(_on_header_pressed.bind(header))
 
     for row_data in data_frame.get_all_rows():
-        var table_row: HBoxContainer = _build_row()
-        add_child(table_row)
+        var row: HBoxContainer = _build_row()
+        row_container.add_child(row)
 
         for cell_data: String in row_data:
-            var table_row_cell: Label = _build_row_cell(cell_data)
-            table_row.add_child(table_row_cell)
+            var row_cell: Label = _build_row_cell(cell_data)
+            row.add_child(row_cell)
 
 
 func _build_row() -> HBoxContainer:
@@ -40,6 +51,7 @@ func _build_row() -> HBoxContainer:
 func _build_header_cell(header: String) -> Button:
     var new_header: Button = header_cell.instantiate()
     new_header.text = header
+    new_header.icon = updown_icon
     return new_header
 
 
@@ -50,9 +62,9 @@ func _build_row_cell(cell_data: String) -> Label:
 
 
 func _reorder() -> void:
-    for idx: int in range(get_child_count() - 1):
+    for idx: int in range(row_container.get_child_count()):
         var frame_row: Array = data_frame.get_row(idx)
-        var table_row: Node = get_child(idx + 1)
+        var table_row: HBoxContainer = row_container.get_child(idx)
 
         for idx_1: int in range(table_row.get_child_count()):
             var row_cell: Label = table_row.get_child(idx_1)
@@ -60,5 +72,21 @@ func _reorder() -> void:
 
 
 func _on_header_pressed(header: String) -> void:
-    data_frame.sort_by(header)
+    if header == last_sort:
+        is_desc = not is_desc
+        var header_idx: int = data_frame.get_column_index(header)
+        var header_button: Button = header_container.get_child(0).get_child(header_idx)
+        header_button.icon = desc_icon if is_desc else asc_icon
+    else:
+        if last_sort:
+            var last_sort_idx: int = data_frame.get_column_index(last_sort)
+            var last_sort_button: Button = header_container.get_child(0).get_child(last_sort_idx)
+            last_sort_button.icon = updown_icon
+        last_sort = header
+        is_desc = false
+        var header_idx: int = data_frame.get_column_index(header)
+        var header_button: Button = header_container.get_child(0).get_child(header_idx)
+        header_button.icon = desc_icon if is_desc else asc_icon
+
+    data_frame.sort_by(header, is_desc)
     _reorder()
