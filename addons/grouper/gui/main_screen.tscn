@@ -46,7 +46,7 @@ theme_override_constants/separation = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
-text = "Last updated 3 minutes ago"
+text = "Last updated 54 seconds ago"
 vertical_alignment = 1
 
 [node name="RefreshButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1374275736]
@@ -71,4 +71,5 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_lfxu0")
 [node name="GroupTable" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/PanelContainer" unique_id=422266960]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/separation = 0
 script = ExtResource("2_i5hoi")

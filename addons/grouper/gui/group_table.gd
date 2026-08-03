@@ -3,15 +3,15 @@ class_name GroupTable
 extends VBoxContainer
 
 
+@onready var row: PackedScene = preload("res://addons/grouper/gui/row.tscn")
+@onready var header_cell: PackedScene = preload("res://addons/grouper/gui/header_cell.tscn")
+@onready var row_cell: PackedScene = preload("res://addons/grouper/gui/row_cell.tscn")
+
 var data_frame: DataFrame
 
 
-func render(new_frame: DataFrame = null) -> void:
-    if new_frame:
-        data_frame = new_frame
-
-    if not data_frame:
-        return
+func render(new_frame: DataFrame) -> void:
+    data_frame = new_frame
 
     get_children().map(func(x): x.queue_free())
 
@@ -33,26 +33,32 @@ func render(new_frame: DataFrame = null) -> void:
 
 
 func _build_row() -> HBoxContainer:
-    var new_row: HBoxContainer = HBoxContainer.new()
+    var new_row: HBoxContainer = row.instantiate()
     return new_row
 
 
 func _build_header_cell(header: String) -> Button:
-    var new_header: Button = Button.new()
+    var new_header: Button = header_cell.instantiate()
     new_header.text = header
-    new_header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    new_header.custom_minimum_size.y = 30
     return new_header
 
 
 func _build_row_cell(cell_data: String) -> Label:
-    var new_cell: Label = Label.new()
+    var new_cell: Label = row_cell.instantiate()
     new_cell.text = cell_data
-    new_cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    new_cell.custom_minimum_size.y = 30
     return new_cell
+
+
+func _reorder() -> void:
+    for idx: int in range(get_child_count() - 1):
+        var frame_row: Array = data_frame.get_row(idx)
+        var table_row: Node = get_child(idx + 1)
+
+        for idx_1: int in range(table_row.get_child_count()):
+            var row_cell: Label = table_row.get_child(idx_1)
+            row_cell.text = frame_row[idx_1]
 
 
 func _on_header_pressed(header: String) -> void:
     data_frame.sort_by(header)
-    render()
+    _reorder()

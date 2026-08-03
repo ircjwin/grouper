@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bykvkn4q8jwa6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2eyje"]
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2xlsn"]
+bg_color = Color(0, 0, 0, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hoagp"]
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_detail = 1
+
+[node name="HeaderCell" type="Button" unique_id=1281031069]
+custom_minimum_size = Vector2(0, 30)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_2eyje")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_2xlsn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hoagp")
