@@ -9,6 +9,11 @@ _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\">
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfxu0"]
 bg_color = Color(0.21330002, 0.229365, 0.27, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_blend = true
 
 [node name="MainScreen" type="Control" unique_id=923463179]
 layout_mode = 3
@@ -46,7 +51,7 @@ theme_override_constants/separation = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
-text = "Last updated 11 seconds ago"
+text = "Last updated 3 minutes ago"
 vertical_alignment = 1
 
 [node name="RefreshButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1374275736]

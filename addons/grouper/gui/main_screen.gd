@@ -10,7 +10,12 @@ const SCENE_CFG: String = "res://.godot/scene_groups_cache.cfg"
 const COLUMN_1: String = "Node"
 const COLUMN_2: String = "Scene"
 const COLUMN_3: String = "Group"
-const COLUMN_4: String = "Group Type"
+const COLUMN_4: String = "Group Scope"
+
+const SINGLE_SEC: String = "second"
+const PLURAL_SEC: String = "seconds"
+const SINGLE_MIN: String = "minute"
+const PLURAL_MIN: String = "minutes"
 
 const GLOBAL_GROUP: String = "Global"
 const SCENE_GROUP: String = "Scene"
@@ -19,43 +24,62 @@ const SCENE_GROUP: String = "Scene"
 @onready var update_label: Label = %UpdateLabel
 @onready var refresh_button: Button = %RefreshButton
 
+# Doesn't seem like this script needs a local DataFrame
 var data_frame: DataFrame
 var global_groups: PackedStringArray
 var last_update: int
+var is_updating: bool
 
 
 func _ready() -> void:
-    _build_frame()
-    group_table.render(data_frame)
-    last_update = Time.get_ticks_msec()
+    _display_table()
 
     refresh_button.icon = get_theme_icon(&"Reload", &"EditorIcons")
     refresh_button.pressed.connect(_on_refresh_button_pressed)
 
 
 func _process(_delta: float) -> void:
+    if is_updating:
+        update_label.text = "Updating..."
+        refresh_button.hide()
+        return
+
+    refresh_button.show()
+
     var time_since: int
     var time_unit: String
     var since_update: int = (Time.get_ticks_msec() - last_update) / 1000
 
     if since_update < 60:
         time_since = since_update
-        time_unit = "seconds"
+
+        if time_since == 1:
+            time_unit = SINGLE_SEC
+        else:
+            time_unit = PLURAL_SEC
     else:
         time_since = since_update / 60
 
         if time_since < 2:
-            time_unit = "minute"
+            time_unit = SINGLE_MIN
         else:
-            time_unit = "minutes"
+            time_unit = PLURAL_MIN
 
     update_label.text = "Last updated %d %s ago" % [time_since, time_unit]
 
 
-func _on_refresh_button_pressed() -> void:
+func _display_table() -> void:
+    is_updating = true
+
     _build_frame()
     group_table.render(data_frame)
     last_update = Time.get_ticks_msec()
+
+    is_updating = false
+
+
+func _on_refresh_button_pressed() -> void:
+    _display_table()
 
 
 func _build_frame() -> void:
@@ -79,20 +103,19 @@ func _get_grouped_nodes(scene_path: String) -> Array:
 
         for node_group: String in node_groups:
             var node_name: String = scene_state.get_node_name(node_idx)
-            var group_type: String = _type_group(node_group)
-            grouped_nodes.append([node_name, scene_path, node_group, group_type])
+            var group_scope: String = _get_group_scope(node_group)
+            grouped_nodes.append([node_name, scene_path, node_group, group_scope])
 
     return grouped_nodes
 
 
-# This is a scope, not type
-func _type_group(group: String) -> String:
-    var group_type: String = SCENE_GROUP
+func _get_group_scope(group: String) -> String:
+    var group_scope: String = SCENE_GROUP
 
     if group in global_groups:
-        group_type = GLOBAL_GROUP
+        group_scope = GLOBAL_GROUP
 
-    return group_type
+    return group_scope
 
 
 func _load_config(path: String) -> ConfigFile:

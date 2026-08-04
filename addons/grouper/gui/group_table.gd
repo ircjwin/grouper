@@ -18,12 +18,9 @@ var is_desc: bool
 
 
 func render(new_frame: DataFrame) -> void:
+    _clear()
+    
     data_frame = new_frame
-    last_sort = ""
-    is_desc = false
-
-    header_container.get_children().map(func(x): if x is HBoxContainer: x.queue_free())
-    row_container.get_children().map(func(x): x.queue_free())
 
     var header_row: HBoxContainer = _build_row()
     header_container.add_child(header_row)
@@ -41,6 +38,15 @@ func render(new_frame: DataFrame) -> void:
         for cell_data: String in row_data:
             var row_cell: Label = _build_row_cell(cell_data)
             row.add_child(row_cell)
+
+
+func _clear() -> void:
+    data_frame = null
+    last_sort = ""
+    is_desc = false
+
+    header_container.get_children().map(func(x): if x is HBoxContainer: x.queue_free())
+    row_container.get_children().map(func(x): x.queue_free())
 
 
 func _build_row() -> HBoxContainer:
@@ -71,22 +77,30 @@ func _reorder() -> void:
             row_cell.text = frame_row[idx_1]
 
 
+func _change_header_icon(header: String, icon: Texture2D = null) -> void:
+    var header_icon: Texture2D
+
+    if icon:
+        header_icon = icon
+    else:
+        header_icon = desc_icon if is_desc else asc_icon
+
+    var header_idx: int = data_frame.get_column_index(header)
+    var header_button: Button = header_container.get_child(0).get_child(header_idx)
+    header_button.icon = header_icon
+
+
 func _on_header_pressed(header: String) -> void:
     if header == last_sort:
         is_desc = not is_desc
-        var header_idx: int = data_frame.get_column_index(header)
-        var header_button: Button = header_container.get_child(0).get_child(header_idx)
-        header_button.icon = desc_icon if is_desc else asc_icon
+        _change_header_icon(header)
     else:
         if last_sort:
-            var last_sort_idx: int = data_frame.get_column_index(last_sort)
-            var last_sort_button: Button = header_container.get_child(0).get_child(last_sort_idx)
-            last_sort_button.icon = updown_icon
-        last_sort = header
+            _change_header_icon(last_sort, updown_icon)
+
         is_desc = false
-        var header_idx: int = data_frame.get_column_index(header)
-        var header_button: Button = header_container.get_child(0).get_child(header_idx)
-        header_button.icon = desc_icon if is_desc else asc_icon
+        _change_header_icon(header)
+        last_sort = header
 
     data_frame.sort_by(header, is_desc)
     _reorder()
