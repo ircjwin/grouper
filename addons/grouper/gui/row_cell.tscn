@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cylcrkq6fiec2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bvhwj"]
-content_margin_left = 10.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_18ni4"]
 draw_center = false
 border_width_left = 1
 border_width_top = 1
@@ -18,5 +17,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_bvhwj")
+theme_override_styles/normal = SubResource("StyleBoxFlat_18ni4")
 vertical_alignment = 2
+clip_text = true

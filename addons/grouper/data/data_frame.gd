@@ -65,6 +65,10 @@ func sort_by(column: String, is_desc: bool = false) -> void:
 
 
 func _column_sort(row_1: Array, row_2: Array, idx: int, is_desc: bool) -> bool:
+    # Workaround for: https://github.com/godotengine/godot/issues/49618
+    if row_1[idx] == row_2[idx]:
+        return false
+
     var result: bool = false
 
     if row_1[idx] < row_2[idx]:

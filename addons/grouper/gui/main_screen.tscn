@@ -7,14 +7,6 @@
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
 "
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfxu0"]
-bg_color = Color(0.21330002, 0.229365, 0.27, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_blend = true
-
 [node name="MainScreen" type="Control" unique_id=923463179]
 layout_mode = 3
 anchors_preset = 15
@@ -51,7 +43,7 @@ theme_override_constants/separation = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
-text = "Last updated 3 minutes ago"
+text = "Last updated 22 seconds ago"
 vertical_alignment = 1
 
 [node name="RefreshButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1374275736]
@@ -67,7 +59,6 @@ icon_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_lfxu0")
 
 [node name="GroupTable" type="Control" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=885036257]
 unique_name_in_owner = true
@@ -85,10 +76,17 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/GroupTable/HeaderContainer" unique_id=1998825056]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RowContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/GroupTable/HeaderContainer/ScrollContainer" unique_id=48396829]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/GroupTable/HeaderContainer/ScrollContainer" unique_id=1594215483]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = -8
+
+[node name="RowContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/GroupTable/HeaderContainer/ScrollContainer/MarginContainer" unique_id=48396829]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

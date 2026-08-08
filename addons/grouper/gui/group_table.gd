@@ -6,8 +6,12 @@ extends Control
 @onready var row: PackedScene = preload("res://addons/grouper/gui/row.tscn")
 @onready var header_cell: PackedScene = preload("res://addons/grouper/gui/header_cell.tscn")
 @onready var row_cell: PackedScene = preload("res://addons/grouper/gui/row_cell.tscn")
+
 @onready var header_container: VBoxContainer = %HeaderContainer
 @onready var row_container: VBoxContainer = %RowContainer
+@onready var scroll_container: ScrollContainer = %ScrollContainer
+@onready var margin_container: MarginContainer = %MarginContainer
+
 @onready var updown_icon: Texture2D = get_theme_icon(&"GuiSpinboxUpdown", &"EditorIcons")
 @onready var asc_icon: Texture2D = get_theme_icon(&"GuiSpinboxUp", &"EditorIcons")
 @onready var desc_icon: Texture2D = get_theme_icon(&"GuiSpinboxDown", &"EditorIcons")
@@ -19,7 +23,7 @@ var is_desc: bool
 
 func render(new_frame: DataFrame) -> void:
     _clear()
-    
+
     data_frame = new_frame
 
     var header_row: HBoxContainer = _build_row()
@@ -38,6 +42,9 @@ func render(new_frame: DataFrame) -> void:
         for cell_data: String in row_data:
             var row_cell: Label = _build_row_cell(cell_data)
             row.add_child(row_cell)
+
+    var bar_width: float = scroll_container.get_v_scroll_bar().get_rect().size.x
+    margin_container.add_theme_constant_override("margin_right", -bar_width)
 
 
 func _clear() -> void:
