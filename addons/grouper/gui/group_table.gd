@@ -1,7 +1,8 @@
 @tool
-class_name GroupTable
 extends Control
 
+
+const DataFrame = preload("res://addons/grouper/data/data_frame.gd")
 
 @onready var row: PackedScene = preload("res://addons/grouper/gui/row.tscn")
 @onready var header_cell: PackedScene = preload("res://addons/grouper/gui/header_cell.tscn")

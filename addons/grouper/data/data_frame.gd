@@ -1,5 +1,4 @@
 @tool
-class_name DataFrame
 extends Resource
 
 
@@ -7,8 +6,8 @@ var data: Array
 var columns: PackedStringArray
 
 
-static func create(new_data: Array, new_columns: PackedStringArray) -> DataFrame:
-    var data_frame: DataFrame = DataFrame.new()
+static func create(new_data: Array, new_columns: PackedStringArray) -> Resource:
+    var data_frame = new()
     data_frame.data = new_data
     data_frame.columns = new_columns
     return data_frame

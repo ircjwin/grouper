@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://dwio7t7sodrx2"]
+
+[ext_resource type="Script" uid="uid://chyx7l1yfjkpt" path="res://addons/grouper/gui/group_table.gd" id="1_wlufo"]
+
+[node name="GroupTable" type="Control" unique_id=501688013]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_wlufo")
+
+[node name="HeaderContainer" type="VBoxContainer" parent="." unique_id=1751875746]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HeaderContainer" unique_id=180383333]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HeaderContainer/ScrollContainer" unique_id=995381431]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = -8
+
+[node name="RowContainer" type="VBoxContainer" parent="HeaderContainer/ScrollContainer/MarginContainer" unique_id=2139270452]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0

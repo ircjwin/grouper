@@ -20,6 +20,9 @@ const PLURAL_MIN: String = "minutes"
 const GLOBAL_GROUP: String = "Global"
 const SCENE_GROUP: String = "Scene"
 
+const DataFrame = preload("res://addons/grouper/data/data_frame.gd")
+const GroupTable = preload("res://addons/grouper/gui/group_table.gd")
+
 @onready var group_table: GroupTable = %GroupTable
 @onready var update_label: Label = %UpdateLabel
 @onready var refresh_button: Button = %RefreshButton
@@ -29,6 +32,7 @@ var data_frame: DataFrame
 var global_groups: PackedStringArray
 var last_update: int
 var is_updating: bool
+var current_time: int
 
 
 func _ready() -> void:
@@ -65,7 +69,9 @@ func _process(_delta: float) -> void:
         else:
             time_unit = PLURAL_MIN
 
-    update_label.text = "Last updated %d %s ago" % [time_since, time_unit]
+    if time_since != current_time:
+        update_label.text = "Last updated %d %s ago" % [time_since, time_unit]
+        current_time = time_since
 
 
 func _display_table() -> void:
