@@ -36,4 +36,5 @@ size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_2eyje")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_2xlsn")
 theme_override_styles/hover = SubResource("StyleBoxFlat_hoagp")
+clip_text = true
 icon_alignment = 2

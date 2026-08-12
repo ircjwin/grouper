@@ -15,6 +15,7 @@ const GLOBAL_GROUP_SECTION: String = "global_group"
 var whitelist: Resource = preload("res://tests/whitelist.gd").new()
 var node_names: Array[String] = whitelist.node_names
 var group_names: Array[String] = whitelist.group_names
+var node_groups: Array
 
 
 func _run() -> void:
@@ -31,10 +32,19 @@ func _run() -> void:
 
 
 func _select_global_groups() -> Array:
+    var adj_max: int = clampi(GLOBAL_GROUP_MAX, 0, len(node_groups))
     var global_groups: Array = []
 
-    for _i: int in range(GLOBAL_GROUP_MAX):
-        global_groups.append(group_names.pick_random())
+    for _i: int in range(adj_max):
+        var global_group: String
+
+        while true:
+            global_group = node_groups.pick_random()
+
+            if not global_groups.has(global_group):
+                break
+
+        global_groups.append(global_group)
 
     return global_groups
 
@@ -66,10 +76,11 @@ func _roll(rand_max: int = 1) -> int:
 
 
 func _create_node(name: String) -> Node:
+    var adj_max: int = clampi(NODE_GROUP_MAX, 0, len(group_names))
     var node: Node = Node.new()
     node.name = name
 
-    for _i: int in range(_roll(NODE_GROUP_MAX)):
+    for _i: int in range(_roll(adj_max)):
         var node_group: String
 
         while true:
@@ -77,6 +88,9 @@ func _create_node(name: String) -> Node:
 
             if not node.is_in_group(node_group):
                 break
+
+        if not node_groups.has(node_group):
+            node_groups.append(node_group)
 
         node.add_to_group(node_group, true)
 

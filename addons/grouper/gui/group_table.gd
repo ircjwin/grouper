@@ -64,6 +64,7 @@ func _build_row() -> HBoxContainer:
 func _build_header_cell(header: String) -> Button:
     var new_header: Button = header_cell.instantiate()
     new_header.text = header
+    new_header.tooltip_text = header
     new_header.icon = updown_icon
     return new_header
 
@@ -71,6 +72,7 @@ func _build_header_cell(header: String) -> Button:
 func _build_row_cell(cell_data: String) -> Label:
     var new_cell: Label = row_cell.instantiate()
     new_cell.text = cell_data
+    new_cell.tooltip_text = cell_data
     return new_cell
 
 
@@ -82,6 +84,7 @@ func _reorder() -> void:
         for idx_1: int in range(table_row.get_child_count()):
             var row_cell: Label = table_row.get_child(idx_1)
             row_cell.text = frame_row[idx_1]
+            row_cell.tooltip_text = frame_row[idx_1]
 
 
 func _change_header_icon(header: String, icon: Texture2D = null) -> void:
