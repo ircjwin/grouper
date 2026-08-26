@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://deeykv07siy56"
-path="res://.godot/imported/grouper_logo.svg-e2d57e31a1d9ee322c2c35bb3d49ebd6.ctex"
+path="res://.godot/imported/grouper_icon.svg-fb3d40e373ff6708071ba48805b693a0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/grouper/assets/grouper_logo.svg"
-dest_files=["res://.godot/imported/grouper_logo.svg-e2d57e31a1d9ee322c2c35bb3d49ebd6.ctex"]
+source_file="res://addons/grouper/assets/grouper_icon.svg"
+dest_files=["res://.godot/imported/grouper_icon.svg-fb3d40e373ff6708071ba48805b693a0.ctex"]
 
 [params]
 

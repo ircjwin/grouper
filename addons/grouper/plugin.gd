@@ -3,7 +3,7 @@ extends EditorPlugin
 
 
 var plugin_control: Control
-var plugin_icon: Texture2D = preload("res://addons/grouper/assets/grouper_logo.svg")
+var plugin_icon: Texture2D = preload("res://addons/grouper/assets/grouper_icon.svg")
 
 
 func _enter_tree() -> void:
