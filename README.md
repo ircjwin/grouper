@@ -1,7 +1,9 @@
 # grouper
-Godot plugin for debugging node groups
+
 <picture>
-  <source media="(prefers-color-scheme: light)" srcset="docs/media/grouper_logo_light.png" />
-  <source media="(prefers-color-scheme: dark)" srcset="docs/media/grouper_logo_dark.png" />
-  <img src="docs/media/grouper_logo_light.png" />
+  <source srcset="/docs/media/grouper_logo_light.png" media="(prefers-color-scheme: light)" />
+  <source srcset="/docs/media/grouper_logo_dark.png" media="(prefers-color-scheme: dark)" />
+  <img src="/docs/media/grouper_logo_light.png" />
 </picture>
+
+Godot plugin for debugging node groups
