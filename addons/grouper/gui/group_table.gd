@@ -2,29 +2,30 @@
 extends Control
 
 
+# Prevents global namespace pollution
 const DataFrame = preload("res://addons/grouper/data/data_frame.gd")
 
-@onready var row: PackedScene = preload("res://addons/grouper/gui/row.tscn")
-@onready var header_cell: PackedScene = preload("res://addons/grouper/gui/header_cell.tscn")
-@onready var row_cell: PackedScene = preload("res://addons/grouper/gui/row_cell.tscn")
-
-@onready var header_container: VBoxContainer = %HeaderContainer
-@onready var row_container: VBoxContainer = %RowContainer
-@onready var scroll_container: ScrollContainer = %ScrollContainer
-@onready var margin_container: MarginContainer = %MarginContainer
-
-@onready var updown_icon: Texture2D = get_theme_icon(&"GuiSpinboxUpdown", &"EditorIcons")
-@onready var asc_icon: Texture2D = get_theme_icon(&"GuiSpinboxUp", &"EditorIcons")
-@onready var desc_icon: Texture2D = get_theme_icon(&"GuiSpinboxDown", &"EditorIcons")
+const TABLE_MARGIN_RIGHT: String = "margin_right"
 
 var data_frame: DataFrame
 var last_sort: String
 var is_desc: bool
 
+@onready var header_container: VBoxContainer = %HeaderContainer
+@onready var row_container: VBoxContainer = %RowContainer
+@onready var scroll_container: ScrollContainer = %ScrollContainer
+@onready var margin_container: MarginContainer = %MarginContainer
+@onready var row: PackedScene = preload("res://addons/grouper/gui/row.tscn")
+@onready var header_cell: PackedScene = preload("res://addons/grouper/gui/header_cell.tscn")
+@onready var row_cell: PackedScene = preload("res://addons/grouper/gui/row_cell.tscn")
+@onready var updown_icon: Texture2D = get_theme_icon(&"GuiSpinboxUpdown", &"EditorIcons")
+@onready var asc_icon: Texture2D = get_theme_icon(&"GuiSpinboxUp", &"EditorIcons")
+@onready var desc_icon: Texture2D = get_theme_icon(&"GuiSpinboxDown", &"EditorIcons")
+
 
 func render(new_frame: DataFrame) -> void:
     _clear()
-
+    
     data_frame = new_frame
 
     var header_row: HBoxContainer = _build_row()
@@ -44,8 +45,9 @@ func render(new_frame: DataFrame) -> void:
             var row_cell: Label = _build_row_cell(cell_data)
             row.add_child(row_cell)
 
-    var bar_width: float = scroll_container.get_v_scroll_bar().get_rect().size.x
-    margin_container.add_theme_constant_override("margin_right", -bar_width)
+    # Maintain row alignment with header
+    var scroll_bar_width: float = scroll_container.get_v_scroll_bar().get_rect().size.x
+    margin_container.add_theme_constant_override(TABLE_MARGIN_RIGHT, -scroll_bar_width)
 
 
 func _clear() -> void:
@@ -53,8 +55,13 @@ func _clear() -> void:
     last_sort = ""
     is_desc = false
 
-    header_container.get_children().map(func(x): if x is HBoxContainer: x.queue_free())
-    row_container.get_children().map(func(x): x.queue_free())
+    header_container.get_children().map(_free_rows)
+    row_container.get_children().map(_free_rows)
+
+
+func _free_rows(child: Variant) -> void:
+    if child is HBoxContainer:
+        child.queue_free()
 
 
 func _build_row() -> HBoxContainer:
@@ -78,40 +85,36 @@ func _build_row_cell(cell_data: String) -> Label:
 
 
 func _reorder() -> void:
-    for idx: int in range(row_container.get_child_count()):
-        var frame_row: Array = data_frame.get_row(idx)
-        var table_row: HBoxContainer = row_container.get_child(idx)
+    var row_count: int = row_container.get_child_count()
 
-        for idx_1: int in range(table_row.get_child_count()):
-            var row_cell: Label = table_row.get_child(idx_1)
-            row_cell.text = frame_row[idx_1]
-            row_cell.tooltip_text = frame_row[idx_1]
+    for i in range(row_count):
+        var frame_row: Array = data_frame.get_row(i)
+        var table_row: HBoxContainer = row_container.get_child(i)
+        var cell_count: int = table_row.get_child_count()
+
+        for j in range(cell_count):
+            var cell: Label = table_row.get_child(j)
+            cell.text = frame_row[j]
+            cell.tooltip_text = frame_row[j]
 
 
 func _change_header_icon(header: String, icon: Texture2D = null) -> void:
-    var header_icon: Texture2D
-
-    if icon:
-        header_icon = icon
-    else:
-        header_icon = desc_icon if is_desc else asc_icon
-
     var header_idx: int = data_frame.get_column_index(header)
     var header_button: Button = header_container.get_child(0).get_child(header_idx)
-    header_button.icon = header_icon
+    header_button.icon = icon
 
 
 func _on_header_pressed(header: String) -> void:
     if header == last_sort:
         is_desc = not is_desc
-        _change_header_icon(header)
     else:
         if last_sort:
             _change_header_icon(last_sort, updown_icon)
 
         is_desc = false
-        _change_header_icon(header)
         last_sort = header
 
+    var header_icon: Texture2D = desc_icon if is_desc else asc_icon
+    _change_header_icon(header, header_icon)
     data_frame.sort_by(header, is_desc)
     _reorder()
